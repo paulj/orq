@@ -1,0 +1,43 @@
+= Introduction
+ORQ (Object Relational Queueing) provides an abstraction for working with message queues directly
+from your objects.
+
+= Getting Started
+Install ORQ with the following:
+  git clone git://github.com/vuderacha/orq.git
+  cd orq
+  rake install
+
+Create a simple impulse:
+  # mymessage.rb
+  class MyMessage < ORQ::Impulse
+    field :text
+    field :interesting
+  end
+
+Create your configuration file (assuming that you are running an AMQP broker on the default port):
+  # messaging.yml
+  development:
+    default:
+      driver: amqp
+
+Create your application:
+  # testapp.rb
+  require 'rubygems'
+  require 'eventmachine'
+  require 'orq/impulse'
+  require 'mymessage'
+  
+  ORQ::Impulse.configure File.join(File.dirname(__FILE__), 'messaging.yml'), 'development'
+  
+  EM.run {
+    ORQ::Impulse.start
+
+    MyMessage.subscribe do |m|
+      puts "Got message: #{m.text} (#{m.interesting})"
+    end
+   
+    EM.add_periodic_timer(1) do
+      MyMessage.new({:text => 'Text', :interesting => 'Cheese'}).fire!
+    end
+  }
