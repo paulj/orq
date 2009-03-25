@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{orq}
-  s.version = "0.0.0"
+  s.version = "0.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Paul Jones"]
-  s.date = %q{2009-03-22}
+  s.date = %q{2009-03-25}
   s.description = %q{ORQ is a queueing abstraction layer allowing messaging to be done directly from object.}
   s.email = %q{pauljones23@gmail.com}
   s.extra_rdoc_files = ["README.rdoc"]
