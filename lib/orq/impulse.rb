@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'yaml'
+require 'json' rescue nil   # This prevents the json gem loading afterwards and messing up the JSON serialisation
 require 'active_support'
 
 module ORQ
@@ -19,6 +20,10 @@ module ORQ
       props.each do |k, v|
         send("#{k}=", v) if respond_to? "#{k}="
       end
+    end
+    
+    def to_json(options = {})
+      ActiveSupport::JSON.encode(instance_values, options)
     end
     
     # Class Methods
