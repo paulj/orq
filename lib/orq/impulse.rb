@@ -11,7 +11,7 @@ module ORQ
     
     # Instructs the impulse to send itself to the message queue
     def fire!
-      self.class.get_target(self.class.target_name).fire self.class.uri, self.to_json
+      self.class.get_target(self.class.target_name).fire self.class.uri, ActiveSupport::JSON.encode(self)
     end
     
     # Instructs the impulse to apply the properties in the given hash
