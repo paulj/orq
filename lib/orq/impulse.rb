@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'yaml'
+require 'activesupport'
 require 'json' rescue nil   # This prevents the json gem loading afterwards and messing up the JSON serialisation
-require 'active_support'
 
 module ORQ
   # Base class inherited by domain objects describing a message that can be sent
@@ -12,7 +12,7 @@ module ORQ
     
     # Instructs the impulse to send itself to the message queue
     def fire!
-      self.class.get_target(self.class.target_name).fire self.class.uri, ActiveSupport::JSON.encode(self)
+      self.class.get_target(self.class.target_name).fire self.class.uri, self.to_json
     end
     
     # Instructs the impulse to apply the properties in the given hash
@@ -23,7 +23,7 @@ module ORQ
     end
     
     def to_json(options = {})
-      ActiveSupport::JSON.encode(instance_values, options)
+      instance_values.to_json
     end
     
     # Class Methods
